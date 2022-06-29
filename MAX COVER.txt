@@ -1,0 +1,49 @@
+Implementation of Bipartite max cover
+
+#include <iostream>
+using namespace std;
+#define A 6
+#define B 6
+bool graph[A][B];
+
+bool Check_for_Match(int u, bool seen[], int set[]) {
+   for (int v = 0; v < B; v++) { 
+      if (graph[u][v] && !seen[v]) { 
+         seen[v] = true;  
+         if (set[v] < 0 || Check_for_Match(set[v], seen, set)) {
+            set[v] = u; 
+            return true;
+         }
+      }
+   }
+   return false;
+}
+
+int MaxCoverMatch() {
+   int set[B];    
+   for(int x = 0; x<B; x++)
+      set[x] = -1;   
+   int c = 0;
+
+   for (int y = 0; y < A; y++) {   
+      bool seen[B];
+      for(int x = 0; x<B; x++)
+         seen[x] = false;    
+      if (Check_for_Match(y, seen, set))   
+         c++;
+   }
+   return c;
+}
+int main() {
+    cout<<"Enter the arrangement of players interest in teams(Adjavency matrics):\n";
+    for(int p=0;p<A;p++)
+    {
+        for(int q=0;q<B;q++)
+        {
+            cin>>graph[p][q];
+        }
+    }
+    cout << "Maximum number of players who gets selected in teams is: "<< MaxCoverMatch();
+    return 0;
+
+}
